@@ -60,14 +60,10 @@ const SurveyForm = () => {
   const selectedFoods = watch("favoriteFoods");
 
   const onSubmit = (data) => {
-    // In a real app, you would send this data to your backend
     console.log("Form submitted:", data);
-
-    // Store in localStorage for demo purposes
     const surveys = JSON.parse(localStorage.getItem("surveys") || "[]");
     surveys.push(data);
     localStorage.setItem("surveys", JSON.stringify(surveys));
-
     setIsSubmitted(true);
     reset();
   };
@@ -330,21 +326,23 @@ const SurveyForm = () => {
           </h2>
 
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full border-collapse">
               <thead>
                 <tr>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 w-1/3">
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 w-1/3 bg-gray-100">
                     Statement
                   </th>
-                  {/* Reverse the order of the rating labels to show Strongly Agree (1) first */}
+                  {/* Header columns with darker background */}
                   {ratingOptions.map((rating) => (
                     <th
                       key={rating}
-                      className="px-2 py-2 text-center text-sm font-medium text-gray-700"
+                      className="px-2 py-2 text-center text-sm font-medium text-gray-700 bg-gray-200" // Changed bg-gray-200 for darker headers
                     >
                       <div className="flex flex-col items-center">
                         <span className="font-bold">{rating}</span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-600">
+                          {" "}
+                          {/* Slightly darker text */}
                           {ratingLabels[rating - 1]}
                         </span>
                       </div>
@@ -355,8 +353,10 @@ const SurveyForm = () => {
               <tbody className="divide-y divide-gray-200">
                 {/* Eat Out Rating */}
                 <tr>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-700">
-                    I like to eat out *
+                  <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-700 bg-gray-50">
+                    {" "}
+                    {/* Added bg-gray-50 for better contrast */}I like to eat
+                    out *
                     {errors.eatOutRating && (
                       <p className="text-red-500 text-sm font-normal mt-1">
                         {errors.eatOutRating.message}
@@ -366,7 +366,7 @@ const SurveyForm = () => {
                   {ratingOptions.map((rating) => (
                     <td
                       key={`eatOut-${rating}`}
-                      className="px-2 py-4 text-center"
+                      className="px-2 py-4 text-center bg-white" // Ensured white background for cells
                     >
                       <Controller
                         name="eatOutRating"
@@ -388,7 +388,7 @@ const SurveyForm = () => {
 
                 {/* Watch Movies Rating */}
                 <tr>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-700">
+                  <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-700 bg-gray-50">
                     I like to watch movies *
                     {errors.watchMoviesRating && (
                       <p className="text-red-500 text-sm font-normal mt-1">
@@ -399,7 +399,7 @@ const SurveyForm = () => {
                   {ratingOptions.map((rating) => (
                     <td
                       key={`movies-${rating}`}
-                      className="px-2 py-4 text-center"
+                      className="px-2 py-4 text-center bg-white"
                     >
                       <Controller
                         name="watchMoviesRating"
@@ -421,7 +421,7 @@ const SurveyForm = () => {
 
                 {/* Watch TV Rating */}
                 <tr>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-700">
+                  <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-700 bg-gray-50">
                     I like to watch TV *
                     {errors.watchTVRating && (
                       <p className="text-red-500 text-sm font-normal mt-1">
@@ -430,7 +430,10 @@ const SurveyForm = () => {
                     )}
                   </td>
                   {ratingOptions.map((rating) => (
-                    <td key={`tv-${rating}`} className="px-2 py-4 text-center">
+                    <td
+                      key={`tv-${rating}`}
+                      className="px-2 py-4 text-center bg-white"
+                    >
                       <Controller
                         name="watchTVRating"
                         control={control}
@@ -451,7 +454,7 @@ const SurveyForm = () => {
 
                 {/* Listen to Radio Rating */}
                 <tr>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-700">
+                  <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-700 bg-gray-50">
                     I like to listen to the radio *
                     {errors.listenToRadioRating && (
                       <p className="text-red-500 text-sm font-normal mt-1">
@@ -462,7 +465,7 @@ const SurveyForm = () => {
                   {ratingOptions.map((rating) => (
                     <td
                       key={`radio-${rating}`}
-                      className="px-2 py-4 text-center"
+                      className="px-2 py-4 text-center bg-white"
                     >
                       <Controller
                         name="listenToRadioRating"
