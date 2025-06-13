@@ -6,53 +6,61 @@ A web-based survey application designed to collect and analyze lifestyle prefere
 
 This application consists of:
 1. **Frontend**: React.js with Tailwind CSS
-2. **Backend**: ASP.NET Core Web API
-3. **Database**: SQL Server (or SQLite for development)
+2. **Backend**: Node.js with Express.js
+3. **Database**: SQLite (default) or SQL Server (optional for production)
+
+---
 
 ## 🚀 Features
 
-### Survey Form
-- User-friendly interface with form validation
-- Personal details collection (Name, Age, Email)
+### ✅ Survey Form
+- Clean and responsive UI
+- Collects personal details (Name, Age, Email, DOB)
 - Multi-select favorite foods (Pizza, Pasta, Pap and Wors, Other)
-- Rating system (1-5 scale using radio buttons)
-- Date picker for date inputs
-- Age validation (5-120 years)
+- Rating system (1–5 scale)
+- Date picker integration
+- Robust validation (e.g., Age between 5 and 120)
 
-### Survey Results Dashboard
+### 📊 Survey Results Dashboard
 - Real-time survey analytics:
-  - Total surveys completed
-  - Average participant age
-  - Oldest/youngest participants
-  - Pizza preference percentage
-  - Average eating-out rating
+  - Total survey submissions
+  - Average, minimum, and maximum participant age
+  - Food preferences breakdown (% choosing each option)
+  - Average lifestyle activity ratings (Eat Out, Watch Movies, Watch TV, Listen to Radio)
+
+---
 
 ## 🛠️ Tech Stack
 
-### Frontend
-| Technology | Purpose |
-|------------|---------|
-| React 18 | Frontend framework |
-| Tailwind CSS | Styling |
-| Axios | API communication |
-| React Hook Form | Form management |
-| React Router | Navigation |
+### 🖥️ Frontend
 
-### Backend
-| Technology | Purpose |
-|------------|---------|
-| ASP.NET Core 6/7 | REST API |
-| Entity Framework Core | ORM |
-| SQL Server | Production database |
-| SQLite | Development database |
-| Swagger | API documentation |
+| Technology        | Purpose                |
+|-------------------|------------------------|
+| React 18          | Frontend framework     |
+| Tailwind CSS      | Utility-first styling  |
+| Axios             | API communication      |
+| React Hook Form   | Form handling          |
+| React Router DOM  | Page routing/navigation |
 
-### Development Tools
-| Tool | Purpose |
-|------|---------|
-| Visual Studio 2022 | .NET development |
-| VS Code | Frontend development |
-| Git | Version control |
-| Postman | API testing |
+### 🌐 Backend
+
+| Technology     | Purpose                   |
+|----------------|---------------------------|
+| Express.js     | REST API framework        |
+| better-sqlite3 | Lightweight SQLite client |
+| SQLite         | Development database      |
+| Node.js        | JavaScript runtime        |
+
+### 🧰 Development Tools
+
+| Tool            | Purpose                 |
+|------------------|-------------------------|
+| VS Code          | Source code editing     |
+| Postman          | API testing             |
+| Git + GitHub     | Version control         |
+| npm / yarn       | Package management      |
+
+---
 
 ## 📂 Project Structure
+
