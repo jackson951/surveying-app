@@ -10,7 +10,7 @@ function App() {
           <div className="container mx-auto flex justify-between items-center">
             <h1 className="text-xl font-bold">Lifestyle Preferences Survey</h1>
             <div className="space-x-4">
-              <Link to="/" className="hover:underline">Fill Out Survey</Link>
+              <Link to="/survey" className="hover:underline">Fill Out Survey</Link>
               <Link to="/results" className="hover:underline">View Results</Link>
             </div>
           </div>
@@ -19,6 +19,7 @@ function App() {
         <main className="container mx-auto p-4">
           <Routes>
             <Route path="/" element={<SurveyForm />} />
+            <Route path="/survey" element={<SurveyForm />} />
             <Route path="/results" element={<SurveyResults />} />
           </Routes>
         </main>
