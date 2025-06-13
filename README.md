@@ -62,68 +62,7 @@ Real-time analytics including:
 | Git + GitHub | Version control |
 | npm / yarn | Package management |
 
-## 📂 Project Structure
 
-```
-lifestyle-survey-app/
-├── frontend/                   # React frontend application
-│   ├── public/
-│   │   ├── index.html
-│   │   └── favicon.ico
-│   ├── src/
-│   │   ├── components/         # Reusable React components
-│   │   │   ├── SurveyForm.js
-│   │   │   ├── Dashboard.js
-│   │   │   └── Navigation.js
-│   │   ├── pages/              # Page components
-│   │   │   ├── Home.js
-│   │   │   ├── Survey.js
-│   │   │   └── Results.js
-│   │   ├── services/           # API service functions
-│   │   │   └── api.js
-│   │   ├── styles/             # CSS and styling files
-│   │   │   └── index.css
-│   │   ├── App.js              # Main App component
-│   │   ├── App.css             # App-specific styles
-│   │   └── index.js            # React DOM entry point
-│   ├── package.json            # Frontend dependencies
-│   ├── tailwind.config.js      # Tailwind CSS configuration
-│   └── README.md               # Frontend documentation
-│
-├── backend/                    # Express.js backend API
-│   ├── src/
-│   │   ├── controllers/        # Route controllers
-│   │   │   └── surveyController.js
-│   │   ├── middleware/         # Custom middleware
-│   │   │   ├── validation.js
-│   │   │   └── errorHandler.js
-│   │   ├── models/             # Database models
-│   │   │   └── surveyModel.js
-│   │   ├── routes/             # API routes
-│   │   │   └── surveyRoutes.js
-│   │   ├── database/           # Database configuration
-│   │   │   ├── config.js
-│   │   │   └── init.js
-│   │   └── app.js              # Express app configuration
-│   ├── database.sqlite         # SQLite database file
-│   ├── server.js               # Server entry point
-│   ├── package.json            # Backend dependencies
-│   └── README.md               # Backend documentation
-│
-├── docs/                       # Project documentation
-│   ├── API.md                  # API documentation
-│   ├── DATABASE.md             # Database schema
-│   └── DEPLOYMENT.md           # Deployment guide
-│
-├── scripts/                    # Utility scripts
-│   ├── setup.sh               # Project setup script
-│   └── reset-db.js            # Database reset utility
-│
-├── .gitignore                 # Git ignore rules
-├── README.md                  # This file
-└── package.json               # Root package.json for scripts
-
-```
 
 ## 🚀 Getting Started
 
@@ -404,13 +343,9 @@ npm install
 - Write meaningful commit messages
 - Add tests for new features
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 👥 Authors
 
-- **Your Name** - *Initial work* - [YourGitHub](https://github.com/yourusername)
+- **Jackson Khuto** - *Initial work* - [GITHUB](https://github.com/jackson951)
 
 ## 🙏 Acknowledgments
 
@@ -423,8 +358,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For support and questions:
 - Create an issue on GitHub
-- Email: your-email@example.com
-- Documentation: [Wiki](https://github.com/yourusername/lifestyle-survey-app/wiki)
+- Email: jacksonkhuto591@gmail.com
+
 
 ---
 
