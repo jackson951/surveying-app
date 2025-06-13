@@ -63,6 +63,7 @@ app.post('/api/surveys', (req, res) => {
     listenToRadioRating
   } = req.body;
 
+  // Validate required fields
   if (
     !name ||
     !email ||
@@ -78,6 +79,13 @@ app.post('/api/surveys', (req, res) => {
   }
 
   try {
+    // Check if email already exists
+    const existingEmail = db.prepare('SELECT 1 FROM surveys WHERE email = ?').get(email);
+    if (existingEmail) {
+      return res.status(409).json({ error: 'This email has already been used to submit a survey.' });
+    }
+
+    // Insert new survey
     const stmt = db.prepare(`
       INSERT INTO surveys (
         name, email, age, dob, favoriteFoods,

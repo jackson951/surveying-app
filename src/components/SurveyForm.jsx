@@ -84,7 +84,13 @@ const SurveyForm = () => {
         reset();
       }
     } catch (err) {
-      setError("Failed to submit survey. Please try again.");
+      // Use backend error message if available
+      const errorMessage =
+        err.response?.data?.error ||
+        err.response?.data?.message ||
+        "Failed to submit survey. Please try again.";
+
+      setError(errorMessage);
       console.error("Submission error:", err);
     } finally {
       setIsLoading(false);
