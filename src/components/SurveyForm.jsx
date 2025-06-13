@@ -3,6 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // Define validation schema using Zod
 const surveySchema = z.object({
@@ -35,6 +36,8 @@ const ratingLabels = [
 const SurveyForm = () => {
   const navigate = useNavigate();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const {
     control,
@@ -59,13 +62,33 @@ const SurveyForm = () => {
 
   const selectedFoods = watch("favoriteFoods");
 
-  const onSubmit = (data) => {
-    console.log("Form submitted:", data);
-    const surveys = JSON.parse(localStorage.getItem("surveys") || "[]");
-    surveys.push(data);
-    localStorage.setItem("surveys", JSON.stringify(surveys));
-    setIsSubmitted(true);
-    reset();
+  const onSubmit = async (data) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/surveys", {
+        name: data.name,
+        email: data.email,
+        age: data.age,
+        dob: data.dob,
+        favoriteFoods: data.favoriteFoods,
+        eatOutRating: parseInt(data.eatOutRating),
+        watchMoviesRating: parseInt(data.watchMoviesRating),
+        watchTVRating: parseInt(data.watchTVRating),
+        listenToRadioRating: parseInt(data.listenToRadioRating),
+      });
+
+      if (response.data.message.toUpperCase().includes("SUCCESS")) {
+        setIsSubmitted(true);
+        reset();
+      }
+    } catch (err) {
+      setError("Failed to submit survey. Please try again.");
+      console.error("Submission error:", err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isSubmitted) {
@@ -98,10 +121,7 @@ const SurveyForm = () => {
               </div>
               <div className="mt-6">
                 <button
-                  onClick={() => {
-                    setIsSubmitted(false);
-                    navigate("/results");
-                  }}
+                  onClick={() => navigate("/results")}
                   className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 >
                   View Survey Results
@@ -131,6 +151,12 @@ const SurveyForm = () => {
           preferences
         </p>
       </div>
+
+      {error && (
+        <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
+          <p className="text-red-700">{error}</p>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
         {/* Personal Details Section */}
@@ -332,17 +358,14 @@ const SurveyForm = () => {
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 w-1/3 bg-gray-100">
                     Statement
                   </th>
-                  {/* Header columns with darker background */}
                   {ratingOptions.map((rating) => (
                     <th
                       key={rating}
-                      className="px-2 py-2 text-center text-sm font-medium text-gray-700 bg-gray-200" // Changed bg-gray-200 for darker headers
+                      className="px-2 py-2 text-center text-sm font-medium text-gray-700 bg-gray-200"
                     >
                       <div className="flex flex-col items-center">
                         <span className="font-bold">{rating}</span>
                         <span className="text-xs text-gray-600">
-                          {" "}
-                          {/* Slightly darker text */}
                           {ratingLabels[rating - 1]}
                         </span>
                       </div>
@@ -354,9 +377,7 @@ const SurveyForm = () => {
                 {/* Eat Out Rating */}
                 <tr>
                   <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-700 bg-gray-50">
-                    {" "}
-                    {/* Added bg-gray-50 for better contrast */}I like to eat
-                    out *
+                    I like to eat out *
                     {errors.eatOutRating && (
                       <p className="text-red-500 text-sm font-normal mt-1">
                         {errors.eatOutRating.message}
@@ -366,7 +387,7 @@ const SurveyForm = () => {
                   {ratingOptions.map((rating) => (
                     <td
                       key={`eatOut-${rating}`}
-                      className="px-2 py-4 text-center bg-white" // Ensured white background for cells
+                      className="px-2 py-4 text-center bg-white"
                     >
                       <Controller
                         name="eatOutRating"
@@ -493,9 +514,12 @@ const SurveyForm = () => {
         <div className="flex justify-center">
           <button
             type="submit"
-            className="px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all shadow-lg hover:shadow-xl"
+            disabled={isLoading}
+            className={`px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all shadow-lg hover:shadow-xl ${
+              isLoading ? "opacity-70 cursor-not-allowed" : ""
+            }`}
           >
-            Submit Survey
+            {isLoading ? "Submitting..." : "Submit Survey"}
           </button>
         </div>
       </form>

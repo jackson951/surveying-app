@@ -1,13 +1,26 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const SurveyResults = () => {
-  const [surveyData, setSurveyData] = useState([]);
+  const [surveyStats, setSurveyStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("surveys") || "[]");
-    setSurveyData(data);
-    setLoading(false);
+    const fetchSurveyResults = async () => {
+      try {
+        // Using Axios instead of fetch
+        const response = await axios.get("http://localhost:5000/api/results");
+        setSurveyStats(response.data);
+        setError(null);
+      } catch (err) {
+        setError(err.response?.data?.error || err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSurveyResults();
   }, []);
 
   if (loading) {
@@ -18,7 +31,16 @@ const SurveyResults = () => {
     );
   }
 
-  if (surveyData.length === 0) {
+  if (error) {
+    return (
+      <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-sm text-center border border-gray-100">
+        <h2 className="text-2xl font-bold mb-3 text-gray-800">Error</h2>
+        <p className="text-red-500">{error}</p>
+      </div>
+    );
+  }
+
+  if (!surveyStats || surveyStats.total === 0) {
     return (
       <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-sm text-center border border-gray-100">
         <h2 className="text-2xl font-bold mb-3 text-gray-800">
@@ -28,49 +50,6 @@ const SurveyResults = () => {
       </div>
     );
   }
-
-  // Calculate all statistics
-  const totalSurveys = surveyData.length;
-  const ages = surveyData.map((s) => parseInt(s.age));
-  const averageAge = (ages.reduce((a, b) => a + b, 0) / totalSurveys).toFixed(
-    1
-  );
-  const oldest = Math.max(...ages);
-  const youngest = Math.min(...ages);
-
-  // Food preferences
-  const pizzaLovers = surveyData.filter((s) =>
-    s.favoriteFoods.includes("Pizza")
-  ).length;
-  const pastaLovers = surveyData.filter((s) =>
-    s.favoriteFoods.includes("Pasta")
-  ).length;
-  const papWorsLovers = surveyData.filter((s) =>
-    s.favoriteFoods.includes("Pap and Wors")
-  ).length;
-
-  const pizzaPercentage = ((pizzaLovers / totalSurveys) * 100).toFixed(1);
-  const pastaPercentage = ((pastaLovers / totalSurveys) * 100).toFixed(1);
-  const papWorsPercentage = ((papWorsLovers / totalSurveys) * 100).toFixed(1);
-
-  // Rating averages
-  const eatOutRatings = surveyData.map((s) => parseInt(s.eatOutRating));
-  const moviesRatings = surveyData.map((s) => parseInt(s.watchMoviesRating));
-  const tvRatings = surveyData.map((s) => parseInt(s.watchTVRating));
-  const radioRatings = surveyData.map((s) => parseInt(s.listenToRadioRating));
-
-  const avgEatOutRating = (
-    eatOutRatings.reduce((a, b) => a + b, 0) / totalSurveys
-  ).toFixed(1);
-  const avgMoviesRating = (
-    moviesRatings.reduce((a, b) => a + b, 0) / totalSurveys
-  ).toFixed(1);
-  const avgTVRating = (
-    tvRatings.reduce((a, b) => a + b, 0) / totalSurveys
-  ).toFixed(1);
-  const avgRadioRating = (
-    radioRatings.reduce((a, b) => a + b, 0) / totalSurveys
-  ).toFixed(1);
 
   return (
     <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-sm border border-gray-100">
@@ -88,23 +67,31 @@ const SurveyResults = () => {
             <span className="text-gray-600 font-medium">
               Total number of surveys:
             </span>
-            <span className="text-gray-800 font-semibold">{totalSurveys}</span>
+            <span className="text-gray-800 font-semibold">
+              {surveyStats.total}
+            </span>
           </div>
           <div className="flex justify-between max-w-xs">
             <span className="text-gray-600 font-medium">Average age:</span>
-            <span className="text-gray-800 font-semibold">{averageAge}</span>
+            <span className="text-gray-800 font-semibold">
+              {surveyStats.avgAge.toFixed(1)}
+            </span>
           </div>
           <div className="flex justify-between max-w-xs">
             <span className="text-gray-600 font-medium">
-              Oldest participant person who participated in the survey:
+              Oldest participant:
             </span>
-            <span className="text-gray-800 font-semibold">{oldest}</span>
+            <span className="text-gray-800 font-semibold">
+              {surveyStats.maxAge}
+            </span>
           </div>
           <div className="flex justify-between max-w-xs">
             <span className="text-gray-600 font-medium">
-              Youngest participant who participated in the survey:
+              Youngest participant:
             </span>
-            <span className="text-gray-800 font-semibold">{youngest}</span>
+            <span className="text-gray-800 font-semibold">
+              {surveyStats.minAge}
+            </span>
           </div>
         </div>
       </div>
@@ -120,7 +107,7 @@ const SurveyResults = () => {
               Percentage of people who like pizza:
             </span>
             <span className="text-gray-800 font-semibold">
-              {pizzaPercentage}%
+              {surveyStats.foodPreferences.pizza.toFixed(1)}%
             </span>
           </div>
           <div className="flex justify-between max-w-xs">
@@ -128,7 +115,7 @@ const SurveyResults = () => {
               Percentage of people who like pasta:
             </span>
             <span className="text-gray-800 font-semibold">
-              {pastaPercentage}%
+              {surveyStats.foodPreferences.pasta.toFixed(1)}%
             </span>
           </div>
           <div className="flex justify-between max-w-xs">
@@ -136,7 +123,7 @@ const SurveyResults = () => {
               Percentage of people who like pap and wors:
             </span>
             <span className="text-gray-800 font-semibold">
-              {papWorsPercentage}%
+              {surveyStats.foodPreferences.papAndWors.toFixed(1)}%
             </span>
           </div>
         </div>
@@ -151,7 +138,7 @@ const SurveyResults = () => {
           <div className="flex justify-between max-w-xs">
             <span className="text-gray-600 font-medium">Like to eat out:</span>
             <span className="text-gray-800 font-semibold">
-              {avgEatOutRating}/5
+              {surveyStats.averageRatings.eatOut.toFixed(1)}/5
             </span>
           </div>
           <div className="flex justify-between max-w-xs">
@@ -159,22 +146,23 @@ const SurveyResults = () => {
               People who like to watch movies:
             </span>
             <span className="text-gray-800 font-semibold">
-              {avgMoviesRating}/5
+              {surveyStats.averageRatings.movies.toFixed(1)}/5
             </span>
           </div>
           <div className="flex justify-between max-w-xs">
             <span className="text-gray-600 font-medium">
-              {" "}
               People who like to watch TV:
             </span>
-            <span className="text-gray-800 font-semibold">{avgTVRating}/5</span>
+            <span className="text-gray-800 font-semibold">
+              {surveyStats.averageRatings.tv.toFixed(1)}/5
+            </span>
           </div>
           <div className="flex justify-between max-w-xs">
             <span className="text-gray-600 font-medium">
               People who like to listen to radio:
             </span>
             <span className="text-gray-800 font-semibold">
-              {avgRadioRating}/5
+              {surveyStats.averageRatings.radio.toFixed(1)}/5
             </span>
           </div>
         </div>
