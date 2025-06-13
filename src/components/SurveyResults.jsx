@@ -136,7 +136,10 @@ const SurveyResults = () => {
         </h3>
         <div className="space-y-3 pl-6">
           <div className="flex justify-between max-w-xs">
-            <span className="text-gray-600 font-medium">Like to eat out:</span>
+            <span className="text-gray-600 font-medium">
+              {" "}
+              People who like to eat out:
+            </span>
             <span className="text-gray-800 font-semibold">
               {surveyStats.averageRatings.eatOut.toFixed(1)}/5
             </span>
