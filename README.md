@@ -52,8 +52,8 @@ A full-stack web application for collecting and analyzing lifestyle preference d
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/lifestyle-survey-app.git
-cd lifestyle-survey-app
+https://github.com/jackson951/surveying-app.git
+cd surveying-app
 ```
 
 2. Install dependencies:
@@ -118,7 +118,7 @@ Base URL: `http://localhost:5000/api`
 ## Project Structure
 
 ```
-lifestyle-survey-app/
+surveying-app/
 ├── public/ # Static files
 ├── src/ # Source code
 ├── package.json # Frontend dependencies
