@@ -130,10 +130,27 @@ app.get('/api/results', (req, res) => {
     }
 
     const results = db.transaction(() => {
+      // Basic demographics
       const demographics = db.prepare(`
-        SELECT AVG(age) as avgAge, MIN(age) as minAge, MAX(age) as maxAge FROM surveys
+        SELECT 
+          AVG(age) as avgAge, 
+          MIN(age) as minAge, 
+          MAX(age) as maxAge,
+          COUNT(DISTINCT email) as uniqueEmails
+        FROM surveys
       `).get();
 
+      // Age distribution
+      const ageDistribution = db.prepare(`
+        SELECT 
+          SUM(CASE WHEN age BETWEEN 5 AND 18 THEN 1 ELSE 0 END) as under18,
+          SUM(CASE WHEN age BETWEEN 19 AND 30 THEN 1 ELSE 0 END) as age19to30,
+          SUM(CASE WHEN age BETWEEN 31 AND 45 THEN 1 ELSE 0 END) as age31to45,
+          SUM(CASE WHEN age > 45 THEN 1 ELSE 0 END) as over45
+        FROM surveys
+      `).get();
+
+      // Food preferences
       const pizzaCount = db.prepare("SELECT SUM(CASE WHEN favoriteFoods LIKE ? THEN 1 ELSE 0 END) FROM surveys")
         .pluck()
         .get("%Pizza%");
@@ -146,23 +163,72 @@ app.get('/api/results', (req, res) => {
         .pluck()
         .get("%Pap and Wors%");
 
+      // Rating distributions
+      const ratingDistributions = db.prepare(`
+        SELECT
+          eatOutRating,
+          watchMoviesRating,
+          watchTVRating,
+          listenToRadioRating
+        FROM surveys
+      `).all();
+
+      // Calculate rating distributions
+      const ratingStats = {
+        eatOut: [0, 0, 0, 0, 0],
+        movies: [0, 0, 0, 0, 0],
+        tv: [0, 0, 0, 0, 0],
+        radio: [0, 0, 0, 0, 0]
+      };
+
+      ratingDistributions.forEach(row => {
+        ratingStats.eatOut[row.eatOutRating - 1]++;
+        ratingStats.movies[row.watchMoviesRating - 1]++;
+        ratingStats.tv[row.watchTVRating - 1]++;
+        ratingStats.radio[row.listenToRadioRating - 1]++;
+      });
+
+      // Average ratings with standard deviation
       const avgRatings = db.prepare(`
         SELECT
           AVG(eatOutRating) as eatOut,
           AVG(watchMoviesRating) as movies,
           AVG(watchTVRating) as tv,
-          AVG(listenToRadioRating) as radio
+          AVG(listenToRadioRating) as radio,
+          AVG(eatOutRating * eatOutRating) - AVG(eatOutRating) * AVG(eatOutRating) as eatOutVariance,
+          AVG(watchMoviesRating * watchMoviesRating) - AVG(watchMoviesRating) * AVG(watchMoviesRating) as moviesVariance,
+          AVG(watchTVRating * watchTVRating) - AVG(watchTVRating) * AVG(watchTVRating) as tvVariance,
+          AVG(listenToRadioRating * listenToRadioRating) - AVG(listenToRadioRating) * AVG(listenToRadioRating) as radioVariance
         FROM surveys
       `).get();
 
+      // Recent submissions
+      const recentSubmissions = db.prepare(`
+        SELECT name, age, submissionDate
+        FROM surveys
+        ORDER BY submissionDate DESC
+        LIMIT 5
+      `).all();
+
       return {
-        demographics,
+        demographics: {
+          ...demographics,
+          ageDistribution
+        },
         foodCounts: {
           pizza: pizzaCount || 0,
           pasta: pastaCount || 0,
           papAndWors: papAndWorsCount || 0
         },
-        avgRatings
+        avgRatings: {
+          ...avgRatings,
+          eatOutStdDev: Math.sqrt(avgRatings.eatOutVariance),
+          moviesStdDev: Math.sqrt(avgRatings.moviesVariance),
+          tvStdDev: Math.sqrt(avgRatings.tvVariance),
+          radioStdDev: Math.sqrt(avgRatings.radioVariance)
+        },
+        ratingDistributions: ratingStats,
+        recentSubmissions
       };
     })();
 
@@ -171,6 +237,13 @@ app.get('/api/results', (req, res) => {
       avgAge: results.demographics.avgAge,
       minAge: results.demographics.minAge,
       maxAge: results.demographics.maxAge,
+      uniqueEmails: results.demographics.uniqueEmails,
+      ageDistribution: {
+        under18: (results.demographics.ageDistribution.under18 / total) * 100,
+        age19to30: (results.demographics.ageDistribution.age19to30 / total) * 100,
+        age31to45: (results.demographics.ageDistribution.age31to45 / total) * 100,
+        over45: (results.demographics.ageDistribution.over45 / total) * 100
+      },
       foodPreferences: {
         pizza: (results.foodCounts.pizza / total) * 100 || 0,
         pasta: (results.foodCounts.pasta / total) * 100 || 0,
@@ -180,8 +253,14 @@ app.get('/api/results', (req, res) => {
         eatOut: results.avgRatings.eatOut || 0,
         movies: results.avgRatings.movies || 0,
         tv: results.avgRatings.tv || 0,
-        radio: results.avgRatings.radio || 0
-      }
+        radio: results.avgRatings.radio || 0,
+        eatOutStdDev: results.avgRatings.eatOutStdDev || 0,
+        moviesStdDev: results.avgRatings.moviesStdDev || 0,
+        tvStdDev: results.avgRatings.tvStdDev || 0,
+        radioStdDev: results.avgRatings.radioStdDev || 0
+      },
+      ratingDistributions: results.ratingDistributions,
+      recentSubmissions: results.recentSubmissions
     });
   } catch (error) {
     console.error('Error in /api/results:', error);
