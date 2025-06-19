@@ -119,14 +119,13 @@ Base URL: `http://localhost:5000/api`
 
 ```
 lifestyle-survey-app/
-├── client/            # Frontend React app
-│   ├── public/        # Static files
-│   ├── src/           # Source code
-│   └── package.json   # Frontend deps
-├── server/            # Backend Node.js
-│   ├── routes/        # API routes
-│   └── package.json   # Backend deps
-└── README.md          # Documentation
+├── public/ # Static files
+├── src/ # Source code
+├── package.json # Frontend dependencies
+├── server/ # Backend Node.js
+│ ├── routes/ # API routes
+│ └── package.json # Backend dependencies
+└── README.md # Project documentation
 ```
 
 ## Development
