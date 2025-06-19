@@ -19,17 +19,17 @@ A full-stack web application for collecting and analyzing lifestyle preference d
 ## Features
 
 ### Survey Form
-✔ Multi-step form with progress indicator  
-✔ Responsive design for all devices  
-✔ Comprehensive validation with error messages  
-✔ Interactive UI elements  
-✔ Success state with multiple actions  
+- Multi-step form with progress indicator
+- Responsive design for all devices
+- Comprehensive validation with error messages
+- Interactive UI elements
+- Success state with multiple actions
 
 ### Results Dashboard
-✔ Real-time analytics with charts  
-✔ Participant demographics  
-✔ Food preference percentages  
-✔ Activity rating averages  
+- Real-time analytics with charts
+- Participant demographics
+- Food preference percentages
+- Activity rating averages
 
 ## Tech Stack
 
@@ -54,52 +54,54 @@ A full-stack web application for collecting and analyzing lifestyle preference d
 ```bash
 git clone https://github.com/your-username/lifestyle-survey-app.git
 cd lifestyle-survey-app
-Install dependencies:
-bash
+```
 
-Copy
+2. Install dependencies:
+```bash
 # For both frontend and backend
 npm run setup
 
 # Or separately:
 cd client && npm install
 cd ../server && npm install
-Configure environment variables (see Configuration)
+```
 
-Start the application:
+3. Configure environment variables (see Configuration)
 
-bash
-
-Copy
+4. Start the application:
+```bash
 npm run dev
-Configuration
-Create these .env files:
+```
 
-server/.env
+## Configuration
 
+Create these `.env` files:
 
-Copy
+**server/.env**
+```
 PORT=5000
 DB_PATH=./survey.db
 NODE_ENV=development
-client/.env
+```
 
-
-Copy
+**client/.env**
+```
 REACT_APP_API_URL=http://localhost:5000
 REACT_APP_ENV=development
-API Documentation
-Base URL: http://localhost:5000/api
+```
 
-Endpoint	Method	Description
-/surveys	POST	Submit new survey
-/results	GET	Get survey results
-/health	GET	Check API health
-Sample Request (POST /surveys):
+## API Documentation
 
-json
+Base URL: `http://localhost:5000/api`
 
-Copy
+| Endpoint    | Method | Description        |
+|-------------|--------|--------------------|
+| `/surveys`  | POST   | Submit new survey  |
+| `/results`  | GET    | Get survey results |
+| `/health`   | GET    | Check API health   |
+
+**Sample Request (POST /surveys):**
+```json
 {
   "name": "John Doe",
   "email": "john@example.com",
@@ -111,10 +113,11 @@ Copy
   "watchTVRating": 3,
   "listenToRadioRating": 2
 }
-Project Structure
-axapta
+```
 
-Copy
+## Project Structure
+
+```
 lifestyle-survey-app/
 ├── client/            # Frontend React app
 │   ├── public/        # Static files
@@ -124,12 +127,13 @@ lifestyle-survey-app/
 │   ├── routes/        # API routes
 │   └── package.json   # Backend deps
 └── README.md          # Documentation
-Development
-Available Scripts:
+```
 
-bash
+## Development
 
-Copy
+**Available Scripts:**
+
+```bash
 # Install all dependencies
 npm run setup
 
@@ -141,28 +145,35 @@ npm test
 
 # Build for production
 npm run build
-Deployment
-Docker (Recommended)
-bash
+```
 
-Copy
+## Deployment
+
+### Docker (Recommended)
+```bash
 docker-compose up --build
-Manual Deployment
-Build frontend:
-bash
+```
 
-Copy
+### Manual Deployment
+
+1. Build frontend:
+```bash
 cd client && npm run build
-Start backend:
-bash
+```
 
-Copy
+2. Start backend:
+```bash
 cd server && npm start
-Contributing
-Fork the repository
-Create your feature branch (git checkout -b feature/NewFeature)
-Commit your changes (git commit -m 'Add NewFeature')
-Push to the branch (git push origin feature/NewFeature)
-Open a Pull Request
-License
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/NewFeature`)
+3. Commit your changes (`git commit -m 'Add NewFeature'`)
+4. Push to the branch (`git push origin feature/NewFeature`)
+5. Open a Pull Request
+
+## License
+
 MIT License - see LICENSE for details
