@@ -2,7 +2,7 @@
   "name": "lifestyle-survey",
   "version": "0.1.0",
   "private": true,
-  "homepage":"https://github.com/jackson951/surveying-app.git",
+  "homepage": "https://jackson951.github.io/surveying-app",
   "dependencies": {
     "@craco/craco": "^7.1.0",
     "@emotion/react": "^11.14.0",
