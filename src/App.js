@@ -21,6 +21,7 @@ function App() {
             <Route path="/" element={<SurveyForm />} />
             <Route path="/survey" element={<SurveyForm />} />
             <Route path="/results" element={<SurveyResults />} />
+            <Route path="/surveying-app" element={<SurveyForm />} />
           </Routes>
         </main>
       </div>
