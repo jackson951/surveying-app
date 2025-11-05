@@ -190,10 +190,10 @@ const SurveyResults = () => {
       {
         label: "Average Rating",
         data: [
-          surveyStats.averageRatings.eatOut,
-          surveyStats.averageRatings.movies,
-          surveyStats.averageRatings.tv,
-          surveyStats.averageRatings.radio,
+          surveyStats.ratingDistributions.eatOut,
+          surveyStats.ratingDistributions.movies,
+          surveyStats.ratingDistributions.tv,
+          surveyStats.ratingDistributions.radio,
         ],
         backgroundColor: "rgba(54, 162, 235, 0.6)",
         borderColor: "rgba(54, 162, 235, 1)",
@@ -202,10 +202,10 @@ const SurveyResults = () => {
       {
         label: "Standard Deviation",
         data: [
-          surveyStats.averageRatings.eatOutStdDev,
-          surveyStats.averageRatings.moviesStdDev,
-          surveyStats.averageRatings.tvStdDev,
-          surveyStats.averageRatings.radioStdDev,
+          surveyStats.ratingDistributions.eatOutStdDev,
+          surveyStats.ratingDistributions.moviesStdDev,
+          surveyStats.ratingDistributions.tvStdDev,
+          surveyStats.ratingDistributions.radioStdDev,
         ],
         backgroundColor: "rgba(255, 99, 132, 0.6)",
         borderColor: "rgba(255, 99, 132, 1)",
@@ -484,37 +484,37 @@ const SurveyResults = () => {
             <div className="bg-pink-50 p-4 rounded-lg border border-pink-100">
               <h4 className="text-sm font-medium text-pink-800">Eat Out</h4>
               <p className="text-2xl font-bold text-pink-600">
-                {surveyStats.averageRatings.eatOut.toFixed(2)}
+                {surveyStats.ratingDistributions.eatOut.toFixed(2)}
               </p>
               <p className="text-xs text-pink-500">
-                ±{surveyStats.averageRatings.eatOutStdDev.toFixed(2)}
+                ±{surveyStats.ratingDistributions.eatOutStdDev.toFixed(2)}
               </p>
             </div>
             <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
               <h4 className="text-sm font-medium text-blue-800">Movies</h4>
               <p className="text-2xl font-bold text-blue-600">
-                {surveyStats.averageRatings.movies.toFixed(2)}
+                {surveyStats.ratingDistributions.movies.toFixed(2)}
               </p>
               <p className="text-xs text-blue-500">
-                ±{surveyStats.averageRatings.moviesStdDev.toFixed(2)}
+                ±{surveyStats.ratingDistributions.moviesStdDev.toFixed(2)}
               </p>
             </div>
             <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
               <h4 className="text-sm font-medium text-yellow-800">TV</h4>
               <p className="text-2xl font-bold text-yellow-600">
-                {surveyStats.averageRatings.tv.toFixed(2)}
+                {surveyStats.ratingDistributions.tv.toFixed(2)}
               </p>
               <p className="text-xs text-yellow-500">
-                ±{surveyStats.averageRatings.tvStdDev.toFixed(2)}
+                ±{surveyStats.ratingDistributions.tvStdDev.toFixed(2)}
               </p>
             </div>
             <div className="bg-green-50 p-4 rounded-lg border border-green-100">
               <h4 className="text-sm font-medium text-green-800">Radio</h4>
               <p className="text-2xl font-bold text-green-600">
-                {surveyStats.averageRatings.radio.toFixed(2)}
+                {surveyStats.ratingDistributions.radio.toFixed(2)}
               </p>
               <p className="text-xs text-green-500">
-                ±{surveyStats.averageRatings.radioStdDev.toFixed(2)}
+                ±{surveyStats.ratingDistributions.radioStdDev.toFixed(2)}
               </p>
             </div>
           </div>

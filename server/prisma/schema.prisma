@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./survey.db"
+}
+
+model Survey {
+  id                   Int      @id @default(autoincrement())
+  name                 String
+  email                String   @unique
+  age                  Int
+  dob                  String
+  favoriteFoods        String
+  eatOutRating         Int
+  watchMoviesRating    Int
+  watchTVRating        Int
+  listenToRadioRating  Int
+  submissionDate       DateTime @default(now())
+}
